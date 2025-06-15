@@ -84,7 +84,7 @@ export function addTrackPiece(scene, type, y) {
 }
 
 export function fasterByTime(scene) {
-    //incrementa la velocità di 2 ogni 30 sec.
+    //incrementa la velocità di 4 ogni 30 sec.
     scene.scrollSpeed += 4
   }
 

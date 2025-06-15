@@ -14,7 +14,7 @@ class GameScene extends Phaser.Scene {
 
     preload(){
         this.load.image('life', './assets/life.png');
-        this.load.image('power', './assets/AvX.png');
+        this.load.image('power', './assets/avX.png');
         //andrebbe mofidicato per creare la linea di inizio
         this.load.image('ground', './assets/straightRoad.png');
         //

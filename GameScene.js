@@ -13,7 +13,6 @@ class GameScene extends Phaser.Scene {
     }
 
     preload(){
-        this.load.image('enemy', 'https://labs.phaser.io/assets/sprites/car90.png');
         this.load.image('life', './assets/life.png');
         this.load.image('power', './assets/AvX.png');
         //andrebbe mofidicato per creare la linea di inizio

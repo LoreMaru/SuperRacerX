@@ -5,10 +5,10 @@ class StartScene extends Phaser.Scene {
 
     preload(){
         
-        this.load.image('sfondoStart', 'SuperRacerX/refs/heads/main/assets/logo/sfondoStart.png');
-        this.load.image('super', 'SuperRacerX/refs/heads/main/assets/logo/super.png');
-        this.load.image('avX', 'SuperRacerX/refs/heads/main/assets/logo/x.png');
-        this.load.image('racer', 'SuperRacerX/refs/heads/main/assets/logo/racer.png');
+        this.load.image('sfondoStart', 'assets/logo/sfondoStart.png');
+        this.load.image('super', 'assets/logo/super.png');
+        this.load.image('avX', 'assets/logo/x.png');
+        this.load.image('racer', 'assets/logo/racer.png');
 
 
     }

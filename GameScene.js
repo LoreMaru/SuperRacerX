@@ -88,7 +88,7 @@ class GameScene extends Phaser.Scene {
         this.lifeBar.setDepth(1)
 
         this.power = this.add.image(755, 590, 'power').setOrigin(1, 1);
-        this.power.setDepth(1);    
+        this.power.setDepth(1).setScale(0.10);    
         this.emptyPowerBar = this.add.rectangle(780, 590, 20, 200, 0x196158).setOrigin(1, 1).setStrokeStyle(2, 0xffffff);
         this.emptyPowerBar.setDepth(0)
         this.powerBar = this.add.rectangle(780, 590, 20, 200, 0x80BA27).setOrigin(1, 1).setStrokeStyle(2, 0xffffff);

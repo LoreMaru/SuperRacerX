@@ -68,15 +68,13 @@ class HowToScene extends Phaser.Scene {
         wordWrap: { width: 700 }
         }).setOrigin(0.5);
 
-        // Bottone START
-        const startButtonY = 530;
-
-        const startButton = this.add.rectangle(400, startButtonY, 150, 50, 0xB1B1B1)
+        // Tasto START
+        const startButton = this.add.rectangle(470, 530, 150, 50, 0xB1B1B1)
         .setInteractive({ useHandCursor: true })
         .setOrigin(0.5)
         .setStrokeStyle(5, 0x302932);
 
-        const startText = this.add.text(400, startButtonY, 'START', {
+        const startText = this.add.text(470, 530, 'START', {
         fontSize: '16px',
         fill: '#302932',
         fontFamily: '"Press Start 2P", monospace',
@@ -85,6 +83,21 @@ class HowToScene extends Phaser.Scene {
         startButton.on('pointerdown', () => {
         this.scene.start('SelectionScene', {});
         });
+
+        // Tasto back
+        const backButton = this.add.rectangle(300, 530, 150, 50, 0xB1B1B1)
+        .setInteractive({ useHandCursor: true })
+        .setOrigin(0.5)
+        .setStrokeStyle(5, 0x302932);
+
+        const backText = this.add.text(300, 530, 'BACK', {
+        fontSize: '16px', fill: '#302932', fontFamily: '"Press Start 2P", monospace',
+        }).setOrigin(0.5);
+
+        // Avvia la scena successiva solo se un personaggio è stato selezionato
+        backButton.on('pointerdown', () => {
+                this.scene.start('StartScene', {});
+        })
 
     }
 

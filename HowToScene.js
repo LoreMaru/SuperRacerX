@@ -94,7 +94,6 @@ class HowToScene extends Phaser.Scene {
         fontSize: '16px', fill: '#302932', fontFamily: '"Press Start 2P", monospace',
         }).setOrigin(0.5);
 
-        // Avvia la scena successiva solo se un personaggio è stato selezionato
         backButton.on('pointerdown', () => {
                 this.scene.start('StartScene', {});
         })

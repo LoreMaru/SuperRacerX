@@ -50,6 +50,7 @@ class GameOverScene extends Phaser.Scene {
 
         reStartButton.on('pointerdown', () => {
         this.scene.start('StartScene', {});
+        this.gameTimer.reset({ delay: 1000000, loop: false });
         });
 
     }

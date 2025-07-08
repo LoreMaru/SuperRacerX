@@ -1,4 +1,4 @@
-import { PG } from './characters.js';
+//import { PG } from './characters.js';
 
 export const EnemyState = {
     IDLE: "IDLE",
@@ -16,8 +16,8 @@ export function addTrackPiece(scene, type, y) {
   }
 
 
-export function spawnRandomEnemyCar(scene, selectedPG) {
-  let pgCopy = PG.filter((x) => x.ID != selectedPG);
+export function spawnRandomEnemyCar(scene, selectedPG, PG) {
+  let pgCopy = scene.PG.filter((x) => x.ID != selectedPG);
   let randomEnemy = pgCopy[Math.floor(Math.random() * pgCopy.length)];
   let enemyCar = scene.physics.add.image(400, -100, `${randomEnemy.ID}`);
 
@@ -43,7 +43,7 @@ export function spawnRandomEnemyCar(scene, selectedPG) {
     enemyCar.setVelocity(0);
     enemyCar.setTint(0xff0000);
     if(!enemyCar.hasHit && !scene.powerAnimation.anims.isPlaying){
-    scene.lifeBar.height -= 10;
+    scene.lifeBar.height -= 100;
     enemyCar.hasHit = true;
     enemyCar.setTint(0xff0000);
     }
@@ -52,8 +52,8 @@ export function spawnRandomEnemyCar(scene, selectedPG) {
 
 
 //funzione per generare nemici ed oggetti nel tempo
-export function spawnThingsOverTime(scene, selectedPG, carSelected, spawnDelay, minimumSpawnDelay) {
-  spawnRandomEnemyCar(scene, selectedPG, carSelected);//genera il nemico
+export function spawnThingsOverTime(scene, selectedPG, carSelected, spawnDelay, minimumSpawnDelay, PG) {
+  spawnRandomEnemyCar(scene, selectedPG, carSelected, PG);//genera il nemico
   spawnRandomObj(scene, carSelected)//genera l'oggetto
   spawnDelay *= 0.9; // calcola il nuovo ritardo: ogni volta diminuisce del 10%
   if (spawnDelay < minimumSpawnDelay) {// limite minimo per non esagerare
@@ -61,7 +61,7 @@ export function spawnThingsOverTime(scene, selectedPG, carSelected, spawnDelay, 
   }
   
   scene.time.delayedCall(spawnDelay, () => {// richiama sé stessa dopo il nuovo delay
-    spawnThingsOverTime(scene, selectedPG, carSelected, spawnDelay, minimumSpawnDelay);
+    spawnThingsOverTime(scene, selectedPG, carSelected, spawnDelay, minimumSpawnDelay, PG);
   });
 }
 

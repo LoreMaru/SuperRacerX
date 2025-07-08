@@ -1,46 +1,24 @@
-import { sport, F1 } from './characters.js';
 
-class SelectionScene extends Phaser.Scene {
+class StyleSelectScene extends Phaser.Scene {
     constructor() {
-        super('SelectionScene');
-    }
-
-    init(dataFromSelection) {
-        //Questo viene chiamato prima di preload()
-        //Serve per portare i dati della selezione dalla scena precedente
-        this.selectedCategory = dataFromSelection.selected;
-
-        // Mappa nome stringa → array importato
-        const categoryMap = {
-        sport,
-        F1
-        };
-
-        // Ottieni l’array corrispondente
-        this.PG = categoryMap[this.selectedCategory];
+        super('StyleSelectScene');
     }
 
     preload(){
-        this.load.image('PG1', './assets/BuickerB.png');
-        this.load.image('PG2', './assets/SuperB.png');
-        this.load.image('PG3', './assets/GalardB.png');
-        this.load.image('PG4', './assets/RamB.png');
-        this.load.image('PG1f', './assets/rosso2.png');
-        this.load.image('PG2f', './assets/blu2.png');
-        this.load.image('PG3f', './assets/verde2.png');
-        this.load.image('PG4f', './assets/viola2.png');
+        this.load.image('sport', './assets/SuperB.png');
+        this.load.image('F1', './assets/rosso2.png');
         this.load.image('sky', './assets/sky.png');
     }
 
     create(){
         // Titolo
-        this.add.text(400, 30, 'Seleziona un veicolo', {
+        this.add.text(400, 30, 'Seleziona una categoria', {
             fontSize: '32px',
             fontFamily: 'Arial',
             color: '#302932'
             }).setOrigin(0.5);
 
-        this.selectedCharacter = null;
+        this.selectedCategory = null;
 
         const centerX = this.cameras.main.centerX;
         const centerY = this.cameras.main.centerY;
@@ -54,7 +32,12 @@ class SelectionScene extends Phaser.Scene {
             { x: centerX + 200, y: centerY + 100 }
           ];
 
-        this.PG.forEach((char, index) => {
+        const PG = [ 
+            {ID: 'sport', name: 'S', immagine: './assets/SuperB.png'},
+            {ID: 'F1', name: 'F', immagine: './assets/rosso.png'},
+        ]
+
+        PG.forEach((char, index) => {
             const pos = positions[index];
             // Crea immagine cliccabile
             const img = this.add.image(pos.x, pos.y, char.ID)
@@ -67,7 +50,7 @@ class SelectionScene extends Phaser.Scene {
                     this.selectedImage.setScale(1);                      // Riporta alla scala normale
                 }
                 //Salva la selezione attuale
-                this.selectedCharacter = char.ID;
+                this.selectedCategory = char.ID;
                 this.selectedImage = img;            
                 //Aggiungi effetto di pulsazione alla scala
                 this.tweens.add({
@@ -86,17 +69,15 @@ class SelectionScene extends Phaser.Scene {
         .setOrigin(0.5)
         .setStrokeStyle(5, 0x302932);
 
-        const startText = this.add.text(400, 480, 'START', {
+        const startText = this.add.text(400, 480, 'VAI', {
         fontSize: '16px', fill: '#302932', fontFamily: '"Press Start 2P", monospace',
         }).setOrigin(0.5);
 
-        const categoryMap = { sport, F1 };
-
         // Avvia la scena successiva solo se un personaggio è stato selezionato
         startButton.on('pointerdown', () => {
-            if (this.selectedCharacter) {
-                this.scene.start('GameScene', { selected: this.selectedCharacter, PG: categoryMap[this.selectedCategory]});
-                //console.log(this.selectedCharacter)
+            if (this.selectedCategory) {
+                this.scene.start('SelectionScene', { selected: this.selectedCategory });
+                //console.log(this.selectedCategory)
             } else {
                 this.add.text(400, 400, 'Seleziona un personaggio!', {
                 fontSize: '20px', fill: '#ff4444',
@@ -115,7 +96,7 @@ class SelectionScene extends Phaser.Scene {
         }).setOrigin(0.5);
 
         backButton.on('pointerdown', () => {
-                this.scene.start('StyleSelectScene', {});
+                this.scene.start('StartScene', {});
         })
 
     }
@@ -126,4 +107,4 @@ class SelectionScene extends Phaser.Scene {
 }  
 
 
-export { SelectionScene };
+export { StyleSelectScene };

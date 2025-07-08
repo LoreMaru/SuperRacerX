@@ -69,7 +69,7 @@ class StartScene extends Phaser.Scene {
         }); 
 
         startButton.on('pointerdown', () => {
-                this.scene.start('SelectionScene', {});
+                this.scene.start('StyleSelectScene', {});
         });  
 
         const versionText = this.add.text(750, 580, `V2.0`, {

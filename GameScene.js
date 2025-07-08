@@ -1,4 +1,4 @@
-import { PG } from './characters.js';
+import { sport, F1 } from './characters.js';
 import { addTrackPiece, spawnThingsOverTime, fasterByTime, powerBarActivation } from './gameMechanics.js';
 
 class GameScene extends Phaser.Scene {
@@ -7,9 +7,10 @@ class GameScene extends Phaser.Scene {
     } 
   
     init(dataFromSelection) {
-      //Questo viene chiamato prima di preload()
-      //Serve per portare i dati della selezione dalla scena precedente
-      this.selectedID = dataFromSelection.selected;
+        //Questo viene chiamato prima di preload()
+        //Serve per portare i dati della selezione dalla scena precedente
+        this.selectedID = dataFromSelection.selected;
+        this.PG = dataFromSelection.PG;
     }
 
     preload(){
@@ -18,7 +19,8 @@ class GameScene extends Phaser.Scene {
         //andrebbe mofidicato per creare la linea di inizio
         this.load.image('ground', './assets/straightRoad.png');
         //
-        this.character = PG.find(c => c.ID === this.selectedID);
+        console.log(this.PG)
+        this.character = this.PG.find(c => c.ID === this.selectedID);
         this.load.image('player', this.character.immagine);
         this.load.image('straight', './assets/straightRoad.png');     // pezzo rettilineo
         this.load.image('curve_left', './assets/leftRoad.png'); // curva a sinistra
@@ -28,6 +30,10 @@ class GameScene extends Phaser.Scene {
         this.load.image('PG2', './assets/SuperB.png');
         this.load.image('PG3', './assets/GalardB.png');
         this.load.image('PG4', './assets/RamB.png');
+        this.load.image('PG1f', './assets/rosso2.png');
+        this.load.image('PG2f', './assets/blu2.png');
+        this.load.image('PG3f', './assets/verde2.png');
+        this.load.image('PG4f', './assets/viola2.png');
         //
         this.load.spritesheet('ScudoX', './assets/effects/spriteX.png', { frameWidth: 32, frameHeight: 32 });
     }
@@ -41,8 +47,7 @@ class GameScene extends Phaser.Scene {
         this.enemies = this.physics.add.group();
         this.enemySpawnDelay = 10000; // in millisecondi (10 secondi)
         this.minimumSpawnDelay = 2000; // non andare sotto i 2 secondi
-
-        spawnThingsOverTime(this, this.selectedID, this.player, this.enemySpawnDelay, this.minimumSpawnDelay); // avvia il ciclo
+        spawnThingsOverTime(this, this.selectedID, this.player, this.enemySpawnDelay, this.minimumSpawnDelay, this.PG); // avvia il ciclo
         //**animazione potere, unica per tutti
         this.anims.create({
             key: 'ScudoX',
@@ -67,7 +72,20 @@ class GameScene extends Phaser.Scene {
         }
 
         //**gestione del timer**
-        this.startTime = this.time.now; // tempo iniziale in millisecondi
+        //this.startTime = this.time.now; // tempo iniziale in millisecondi
+        this.gameTimer = this.time.addEvent({
+        delay: 1000000, // tempo molto lungo, non verrà mai raggiunto
+        loop: false
+        });
+
+        this.timerText = this.add.text(550, 10, "Tempo: 00:00:000", {
+        fontFamily: 'Arial',
+        fontSize: '25px',
+        fill: '#ffffff',
+        stroke: '#000000',
+        strokeThickness: 2
+        }).setDepth(1);
+        /*
         //formattazione testo timer
         this.timerText = this.add.text(550, 10, `Tempo: 0:000`, {
         fontFamily: 'Arial',
@@ -76,6 +94,7 @@ class GameScene extends Phaser.Scene {
         stroke: '#000000',
         strokeThickness: 2
         }).setDepth(1);
+        */
         //per incremento della velocità al passare del tempo
         this.lastHalfMinute = -1;
 
@@ -111,15 +130,15 @@ class GameScene extends Phaser.Scene {
 
         //**gestione comandi
         if (this.cursors.left.isDown) {
-            this.player.setVelocityX(-300);
+            this.player.setVelocityX(-200);
         } else if (this.cursors.right.isDown) {
-            this.player.setVelocityX(300);
+            this.player.setVelocityX(200);
         }
         if (this.cursors.up.isDown) {
-            this.player.setVelocityY(-300);
+            this.player.setVelocityY(-200);
         }
         if (this.cursors.down.isDown) {
-            this.player.setVelocityY(300);
+            this.player.setVelocityY(200);
         }//tasto X per usare il power
         if (Phaser.Input.Keyboard.JustDown(this.keyX)) {
             powerBarActivation(this, this.powerAnimation, 'ScudoX');   
@@ -168,13 +187,22 @@ class GameScene extends Phaser.Scene {
 
         //**Gestione Timer
         if (this.lifeBar && this.lifeBar.height > 0) {
-            const elapsed = this.time.now - this.startTime; // tempo totale in ms
-            const totalSeconds = Math.floor(elapsed / 1000);
+            //const elapsed = this.time.now - this.startTime; // tempo totale in ms
+            /*const totalSeconds = Math.floor(elapsed / 1000);
             const minutes = Math.floor(totalSeconds / 60);
             const seconds = totalSeconds % 60;
             const secondsFormatted = seconds.toString().padStart(2, '0');
-            const milliseconds = Math.floor(elapsed % 1000);
-            
+            const milliseconds = Math.floor(elapsed % 1000);*/
+            const elapsedMs = this.gameTimer.getElapsed(); // millisecondi trascorsi
+            const totalSeconds = Math.floor(elapsedMs / 1000);
+            const minutes = Math.floor(elapsedMs / 60000);
+            const seconds = Math.floor((elapsedMs % 60000) / 1000);
+            const secondsFormatted = seconds.toString().padStart(2, '0');
+            const milliseconds = Math.floor(elapsedMs % 1000);
+
+            const pad = (n, z = 2) => n.toString().padStart(z, '0');
+            this.timerText.setText(`Tempo: ${pad(minutes)}:${pad(seconds)}:${pad(milliseconds, 3)}`);
+
             this.timerText.setText(`Tempo: ${minutes}:${secondsFormatted}:${milliseconds}`);
     
             if (totalSeconds % 15 === 0 && this.lastHalfMinute !== totalSeconds) {
@@ -184,7 +212,6 @@ class GameScene extends Phaser.Scene {
             console.log('velocità',this.scrollSpeed)
             }
         }else {
-            //this.timer.remove();
             this.physics.pause();
             this.player.setTint(0xff0000); // effetto visivo
         

@@ -4,6 +4,8 @@ class StartScene extends Phaser.Scene {
     }
 
     preload(){
+
+        this.load.audio('menuMusic', 'assets/audio/menu.mp3');
         
         this.load.image('sfondoStart', './assets/logo/sfondoStart.png');
         this.load.image('super', './assets/logo/super.png');
@@ -14,6 +16,15 @@ class StartScene extends Phaser.Scene {
     }
 
     create(){
+
+        // Se la musica non è già stata avviata, la aggiungiamo
+        if (!this.game.menuMusic) {
+            this.game.menuMusic = this.sound.add('menuMusic', {
+                loop: true,
+                volume: 0.5
+            });
+            this.game.menuMusic.play();
+        }
 
         this.add.image(400, 300, 'sfondoStart').setDepth(-1).setDisplaySize(800, 600);
         const sup = this.add.image(-100, 100, 'super')
@@ -50,7 +61,7 @@ class StartScene extends Phaser.Scene {
         .setOrigin(0.5)
         .setStrokeStyle(5, 0x302932);
 
-        const startText = this.add.text(400, 400, 'START', {
+        const startText = this.add.text(400, 400, 'START*', {
         fontSize: '16px', fill: '#302932', fontFamily: '"Press Start 2P", monospace',
         }).setOrigin(0.5);
 
@@ -72,7 +83,11 @@ class StartScene extends Phaser.Scene {
                 this.scene.start('StyleSelectScene', {});
         });  
 
-        const versionText = this.add.text(750, 580, `V2.0`, {
+        const musicAllert = this.add.text(400, 500, `*Attenzione alla musica!`, {
+        fontSize: '15px', fill: '#000000', fontFamily: '"Press Start 2P", monospace', align: 'center'
+        }).setOrigin(0.5);
+
+        const versionText = this.add.text(750, 580, `V2.5`, {
             fontSize: '10px', fill: '#302932', fontFamily: '"Press Start 2P", monospace', align: 'center'
             }).setOrigin(0.5);
 

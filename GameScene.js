@@ -1,6 +1,8 @@
 import { sport, F1 } from './characters.js';
 import { addTrackPiece, spawnThingsOverTime, fasterByTime, powerBarActivation } from './gameMechanics.js';
 
+let minutesBar = 1
+
 class GameScene extends Phaser.Scene {
     constructor() {
       super('GameScene');
@@ -14,12 +16,12 @@ class GameScene extends Phaser.Scene {
     }
 
     preload(){
+        this.load.audio('raceMusic', 'assets/audio/race.mp3');
         this.load.image('life', './assets/life.png');
         this.load.image('power', './assets/avX.png');
         //andrebbe mofidicato per creare la linea di inizio
         this.load.image('ground', './assets/straightRoad.png');
         //
-        console.log(this.PG)
         this.character = this.PG.find(c => c.ID === this.selectedID);
         this.load.image('player', this.character.immagine);
         this.load.image('straight', './assets/straightRoad.png');     // pezzo rettilineo
@@ -39,6 +41,20 @@ class GameScene extends Phaser.Scene {
     }
 
     create(){
+        //**Musica
+        //ferma quella del menu
+        if (this.game.menuMusic && this.game.menuMusic.isPlaying) {
+            this.game.menuMusic.stop();
+        }
+        // Avvia musica della gara
+        if (!this.game.raceMusic) {
+            this.game.raceMusic = this.sound.add('raceMusic', {
+                loop: true,
+                volume: 0.6
+            });
+            this.game.raceMusic.play();
+        }
+
 
         //** Giocatore
         this.player = this.physics.add.image(400, 500, 'player');
@@ -47,7 +63,7 @@ class GameScene extends Phaser.Scene {
         this.enemies = this.physics.add.group();
         this.enemySpawnDelay = 10000; // in millisecondi (10 secondi)
         this.minimumSpawnDelay = 2000; // non andare sotto i 2 secondi
-        spawnThingsOverTime(this, this.selectedID, this.player, this.enemySpawnDelay, this.minimumSpawnDelay, this.PG); // avvia il ciclo
+        spawnThingsOverTime(this, this.selectedID, this.player, this.enemySpawnDelay, this.minimumSpawnDelay, this.PG, minutesBar); // avvia il ciclo
         //**animazione potere, unica per tutti
         this.anims.create({
             key: 'ScudoX',
@@ -195,7 +211,7 @@ class GameScene extends Phaser.Scene {
             const milliseconds = Math.floor(elapsed % 1000);*/
             const elapsedMs = this.gameTimer.getElapsed(); // millisecondi trascorsi
             const totalSeconds = Math.floor(elapsedMs / 1000);
-            const minutes = Math.floor(elapsedMs / 60000);
+            const minutes = 2//Math.floor(elapsedMs / 60000);
             const seconds = Math.floor((elapsedMs % 60000) / 1000);
             const secondsFormatted = seconds.toString().padStart(2, '0');
             const milliseconds = Math.floor(elapsedMs % 1000);
@@ -206,10 +222,10 @@ class GameScene extends Phaser.Scene {
             this.timerText.setText(`Tempo: ${minutes}:${secondsFormatted}:${milliseconds}`);
     
             if (totalSeconds % 15 === 0 && this.lastHalfMinute !== totalSeconds) {
-            //incrementa la velocità di 2 ogni minuto
+            //incrementa la velocità di 2 ogni minuti
             this.lastHalfMinute = totalSeconds;
             fasterByTime(this);
-            console.log('velocità',this.scrollSpeed)
+            //console.log('velocità',this.scrollSpeed)
             }
         }else {
             this.physics.pause();

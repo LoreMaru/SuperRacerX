@@ -43,7 +43,7 @@ export function spawnRandomEnemyCar(scene, selectedPG, PG) {
     enemyCar.setVelocity(0);
     enemyCar.setTint(0xff0000);
     if(!enemyCar.hasHit && !scene.powerAnimation.anims.isPlaying){
-    scene.lifeBar.height -= 100;
+    scene.lifeBar.height -= 10;
     enemyCar.hasHit = true;
     enemyCar.setTint(0xff0000);
     }

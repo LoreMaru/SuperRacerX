@@ -41,6 +41,7 @@ class GameScene extends Phaser.Scene {
         this.enemies = this.physics.add.group();
         this.enemySpawnDelay = 10000; // in millisecondi (10 secondi)
         this.minimumSpawnDelay = 2000; // non andare sotto i 2 secondi
+
         spawnThingsOverTime(this, this.selectedID, this.player, this.enemySpawnDelay, this.minimumSpawnDelay); // avvia il ciclo
         //**animazione potere, unica per tutti
         this.anims.create({
@@ -110,15 +111,15 @@ class GameScene extends Phaser.Scene {
 
         //**gestione comandi
         if (this.cursors.left.isDown) {
-            this.player.setVelocityX(-200);
+            this.player.setVelocityX(-300);
         } else if (this.cursors.right.isDown) {
-            this.player.setVelocityX(200);
+            this.player.setVelocityX(300);
         }
         if (this.cursors.up.isDown) {
-            this.player.setVelocityY(-200);
+            this.player.setVelocityY(-300);
         }
         if (this.cursors.down.isDown) {
-            this.player.setVelocityY(200);
+            this.player.setVelocityY(300);
         }//tasto X per usare il power
         if (Phaser.Input.Keyboard.JustDown(this.keyX)) {
             powerBarActivation(this, this.powerAnimation, 'ScudoX');   
@@ -173,8 +174,7 @@ class GameScene extends Phaser.Scene {
             const seconds = totalSeconds % 60;
             const secondsFormatted = seconds.toString().padStart(2, '0');
             const milliseconds = Math.floor(elapsed % 1000);
-            // probabilmente andrà messo qui per la schermata di game over
-            // if (this.lifeBar && this.lifeBar.height > 0) {
+            
             this.timerText.setText(`Tempo: ${minutes}:${secondsFormatted}:${milliseconds}`);
     
             if (totalSeconds % 15 === 0 && this.lastHalfMinute !== totalSeconds) {

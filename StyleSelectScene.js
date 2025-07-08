@@ -6,7 +6,7 @@ class StyleSelectScene extends Phaser.Scene {
 
     preload(){
         this.load.image('sport', './assets/SuperB.png');
-        this.load.image('F1', './assets/rosso2.png');
+        this.load.image('F1', './assets/rosso3.png');
         this.load.image('sky', './assets/sky.png');
     }
 
@@ -42,6 +42,13 @@ class StyleSelectScene extends Phaser.Scene {
             // Crea immagine cliccabile
             const img = this.add.image(pos.x, pos.y, char.ID)
             .setInteractive({ useHandCursor: true })
+
+            //Testo descrittivo
+            /*const label = this.add.text(pos.x, pos.y + 70, char.ID, {
+            fontSize: '18px',
+            fontFamily: 'Arial',
+            color: '#302932'
+            }).setOrigin(0.5);*/
 
             img.on('pointerdown', () => {
                 //Se c'era già un'immagine selezionata, resettiamo il suo stato

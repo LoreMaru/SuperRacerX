@@ -23,22 +23,22 @@ export const sport = [
   export const F1 = [
     { ID: 'PG1f', 
       name: 'A',
-      immagine: './assets/rosso2.png',
+      immagine: './assets/rosso3.png',
     },
     {
       ID: 'PG2f',
       name: 'B',
-      immagine: './assets/blu2.png',
+      immagine: './assets/blu3.png',
     },
     {
       ID: 'PG3f',
       name: 'C',
-      immagine: './assets/verde2.png',
+      immagine: './assets/verde3.png',
     },
     {
       ID: 'PG4f',
       name: 'D',
-      immagine: './assets/viola2.png',
+      immagine: './assets/viola3.png',
     }
   ];
   

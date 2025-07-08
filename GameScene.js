@@ -30,10 +30,10 @@ class GameScene extends Phaser.Scene {
         this.load.image('PG2', './assets/SuperB.png');
         this.load.image('PG3', './assets/GalardB.png');
         this.load.image('PG4', './assets/RamB.png');
-        this.load.image('PG1f', './assets/rosso2.png');
-        this.load.image('PG2f', './assets/blu2.png');
-        this.load.image('PG3f', './assets/verde2.png');
-        this.load.image('PG4f', './assets/viola2.png');
+        this.load.image('PG1f', './assets/rosso3.png');
+        this.load.image('PG2f', './assets/blu3.png');
+        this.load.image('PG3f', './assets/verde3.png');
+        this.load.image('PG4f', './assets/viola3.png');
         //
         this.load.spritesheet('ScudoX', './assets/effects/spriteX.png', { frameWidth: 32, frameHeight: 32 });
     }
@@ -159,7 +159,7 @@ class GameScene extends Phaser.Scene {
         const scrollMultiplier = dt * 60;       // normalizzazione a 60 fps
         // Imposta velocità visiva dello sfondo: rallenta se l’auto è fuori carreggiata
         let visualScrollSpeed = this.scrollSpeed;
-        if (this.player.x < 100 || this.player.x > 600) {
+        if (this.player.x < 100 || this.player.x > 700) {
         visualScrollSpeed = 4.9;
         }
         if (this.slowDownActive) {

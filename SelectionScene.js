@@ -25,10 +25,10 @@ class SelectionScene extends Phaser.Scene {
         this.load.image('PG2', './assets/SuperB.png');
         this.load.image('PG3', './assets/GalardB.png');
         this.load.image('PG4', './assets/RamB.png');
-        this.load.image('PG1f', './assets/rosso2.png');
-        this.load.image('PG2f', './assets/blu2.png');
-        this.load.image('PG3f', './assets/verde2.png');
-        this.load.image('PG4f', './assets/viola2.png');
+        this.load.image('PG1f', './assets/rosso3.png');
+        this.load.image('PG2f', './assets/blu3.png');
+        this.load.image('PG3f', './assets/verde3.png');
+        this.load.image('PG4f', './assets/viola3.png');
         this.load.image('sky', './assets/sky.png');
     }
 

@@ -1,5 +1,7 @@
 //import { PG } from './characters.js';
 
+let enemySpawned = 0
+
 export const EnemyState = {
     IDLE: "IDLE",
     CHASING: "CHASING",
@@ -54,7 +56,7 @@ export function spawnRandomEnemyCar(scene, selectedPG, PG) {
 //funzione per generare nemici ed oggetti nel tempo
 export function spawnThingsOverTime(scene, selectedPG, carSelected, spawnDelay, minimumSpawnDelay, PG) {
   spawnRandomEnemyCar(scene, selectedPG, carSelected, PG);//genera il nemico
-  spawnRandomObj(scene, carSelected)//genera l'oggetto
+  spawnRandomObj(scene, carSelected, enemySpawned)//genera l'oggetto
   spawnDelay *= 0.9; // calcola il nuovo ritardo: ogni volta diminuisce del 10%
   if (spawnDelay < minimumSpawnDelay) {// limite minimo per non esagerare
     spawnDelay = minimumSpawnDelay;
@@ -62,10 +64,11 @@ export function spawnThingsOverTime(scene, selectedPG, carSelected, spawnDelay, 
   
   scene.time.delayedCall(spawnDelay, () => {// richiama sé stessa dopo il nuovo delay
     spawnThingsOverTime(scene, selectedPG, carSelected, spawnDelay, minimumSpawnDelay, PG);
+    enemySpawned += 1
   });
 }
 
-export function spawnRandomObj(scene, carSelected){
+export function spawnRandomObj(scene, carSelected, enemySpawned){
   let objectToSpawn;
   let randomItem = Phaser.Math.Between(1, 10);
   isEven(randomItem) ? objectToSpawn = 'power' : objectToSpawn = 'life';
@@ -82,12 +85,20 @@ export function spawnRandomObj(scene, carSelected){
   upItem.setScale(0.07);
 
   scene.physics.add.collider(carSelected, upItem, () => {
+    let barUpValue = 5 * Math.floor(enemySpawned / 10) + 5;
+    console.log(barUpValue)
     upItem.disableBody(true, true);
-    if(objectToSpawn=='life' && scene.lifeBar.height<200){
-      scene.lifeBar.height += 5; 
+    if(scene.lifeBar.height + barUpValue > 200){
+      scene.lifeBar.height = 200
     }
-    if(objectToSpawn=='power' && scene.powerBar.height<200){
-      scene.powerBar.height += 5;
+    else if(objectToSpawn=='life' && scene.lifeBar.height<200){
+      scene.lifeBar.height += barUpValue; 
+    }
+    if(scene.powerBar.height + barUpValue > 200){
+      scene.powerBar.height = 200
+    }
+    else if(objectToSpawn=='power' && scene.powerBar.height<200){
+      scene.powerBar.height += barUpValue;
     }
   });
 }

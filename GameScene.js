@@ -1,7 +1,6 @@
 import { sport, F1 } from './characters.js';
 import { addTrackPiece, spawnThingsOverTime, fasterByTime, powerBarActivation } from './gameMechanics.js';
 
-let minutesBar = 1
 
 class GameScene extends Phaser.Scene {
     constructor() {
@@ -63,7 +62,8 @@ class GameScene extends Phaser.Scene {
         this.enemies = this.physics.add.group();
         this.enemySpawnDelay = 10000; // in millisecondi (10 secondi)
         this.minimumSpawnDelay = 2000; // non andare sotto i 2 secondi
-        spawnThingsOverTime(this, this.selectedID, this.player, this.enemySpawnDelay, this.minimumSpawnDelay, this.PG, minutesBar); // avvia il ciclo
+        // avvia il ciclo
+        spawnThingsOverTime(this, this.selectedID, this.player, this.enemySpawnDelay, this.minimumSpawnDelay, this.PG);
         //**animazione potere, unica per tutti
         this.anims.create({
             key: 'ScudoX',
@@ -211,10 +211,11 @@ class GameScene extends Phaser.Scene {
             const milliseconds = Math.floor(elapsed % 1000);*/
             const elapsedMs = this.gameTimer.getElapsed(); // millisecondi trascorsi
             const totalSeconds = Math.floor(elapsedMs / 1000);
-            const minutes = 2//Math.floor(elapsedMs / 60000);
+            const minutes = Math.floor(elapsedMs / 60000);
             const seconds = Math.floor((elapsedMs % 60000) / 1000);
             const secondsFormatted = seconds.toString().padStart(2, '0');
             const milliseconds = Math.floor(elapsedMs % 1000);
+
 
             const pad = (n, z = 2) => n.toString().padStart(z, '0');
             this.timerText.setText(`Tempo: ${pad(minutes)}:${pad(seconds)}:${pad(milliseconds, 3)}`);

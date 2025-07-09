@@ -18,7 +18,7 @@ export function addTrackPiece(scene, type, y) {
   }
 
 
-export function spawnRandomEnemyCar(scene, selectedPG, PG) {
+export function spawnRandomEnemyCar(scene, selectedPG) {
   let pgCopy = scene.PG.filter((x) => x.ID != selectedPG);
   let randomEnemy = pgCopy[Math.floor(Math.random() * pgCopy.length)];
   let enemyCar = scene.physics.add.image(400, -100, `${randomEnemy.ID}`);
@@ -48,14 +48,15 @@ export function spawnRandomEnemyCar(scene, selectedPG, PG) {
     scene.lifeBar.height -= 10;
     enemyCar.hasHit = true;
     enemyCar.setTint(0xff0000);
+    scene.cameras.main.shake(150, 0.005);
     }
   });
 }
 
 
 //funzione per generare nemici ed oggetti nel tempo
-export function spawnThingsOverTime(scene, selectedPG, carSelected, spawnDelay, minimumSpawnDelay, PG) {
-  spawnRandomEnemyCar(scene, selectedPG, carSelected, PG);//genera il nemico
+export function spawnThingsOverTime(scene, selectedPG, carSelected, spawnDelay, minimumSpawnDelay) {
+  spawnRandomEnemyCar(scene, selectedPG, carSelected);//genera il nemico
   spawnRandomObj(scene, carSelected, enemySpawned)//genera l'oggetto
   spawnDelay *= 0.9; // calcola il nuovo ritardo: ogni volta diminuisce del 10%
   if (spawnDelay < minimumSpawnDelay) {// limite minimo per non esagerare
@@ -63,7 +64,7 @@ export function spawnThingsOverTime(scene, selectedPG, carSelected, spawnDelay, 
   }
   
   scene.time.delayedCall(spawnDelay, () => {// richiama sé stessa dopo il nuovo delay
-    spawnThingsOverTime(scene, selectedPG, carSelected, spawnDelay, minimumSpawnDelay, PG);
+    spawnThingsOverTime(scene, selectedPG, carSelected, spawnDelay, minimumSpawnDelay);
     enemySpawned += 1
   });
 }
@@ -85,6 +86,7 @@ export function spawnRandomObj(scene, carSelected, enemySpawned){
   upItem.setScale(0.07);
 
   scene.physics.add.collider(carSelected, upItem, () => {
+    //ogni 10 nemici comparsi il valore di aumento della barra aumenta di 5 (per ciascun oggetto)
     let barUpValue = 5 * Math.floor(enemySpawned / 10) + 5;
     console.log(barUpValue)
     upItem.disableBody(true, true);
